@@ -91,6 +91,7 @@ int copy_string(struct string* s1, struct string s2) {
     return result;
 }
 
+// Pushes whole s2 to s1
 int push_string(struct string* s1, struct string s2) {
     int result = UNDEFINED;
     for (uint64_t i = 0; i < s2.last_element; ++i) {
@@ -114,17 +115,29 @@ int main() {
 
     add_char(&s, 'h');
 
-    printf("%s\n", s.values);
+    printf("s after add_char: %s\n", s.values);
 
     add_char(&a, 'b');
     add_char(&a, 'e');
     add_char(&a, 'b');
 
-    printf("%s\n", a.values);
+    printf("a after add_char: %s\n", a.values);
+
+    copy_string(&s, a);
+
+    printf("s after copy: %s\n", s.values);
 
     push_string(&s, a);
 
-    printf("%s\n", s.values);
+    printf("s after pushing a: %s\n", s.values);
+
+    add_char(&s, '!');
+
+    printf("s after add_char: %s\n", s.values);
+
+    set_string(&a, s);
+
+    printf("a after setting to s: %s\n", a.values);
 
     return 0;
 }
