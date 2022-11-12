@@ -29,8 +29,10 @@ struct string {
     uint64_t memory_size;
 };
 
+#define string struct string
+
 // Initialize string with default capacity
-int init_string(struct string* s) {
+int init_string(string* s) {
     int result = UNDEFINED;
     s->memory_size = INIT_CAPACITY;
     s->values = new(char, INIT_CAPACITY);
@@ -39,7 +41,7 @@ int init_string(struct string* s) {
 }
 
 // Initialize string with set capacity
-int init_string_with_set_capacity(struct string* s, uint64_t capacity) {
+int init_string_with_set_capacity(string* s, uint64_t capacity) {
     int result = UNDEFINED;
     s->memory_size = capacity;
     s->values = new(char, capacity);
@@ -48,7 +50,7 @@ int init_string_with_set_capacity(struct string* s, uint64_t capacity) {
 }
 
 // Sets all struct's parameters to zero
-int free_string(struct string* s) {
+int free_string(string* s) {
     int result = UNDEFINED;
     s->values = new(char, 0);
     s->last_element = 0;
@@ -57,14 +59,14 @@ int free_string(struct string* s) {
 }
 
 // Adds memory
-int string_resize(struct string* s, uint64_t capacity) {
+int string_resize(string* s, uint64_t capacity) {
     int result = UNDEFINED;
     s->values = reallocate(s->values, char, capacity);
     return SUCCESS;
 }
 
 // Adds a char to string, adding more memory if needed 
-int add_char(struct string* s, char value) {
+int add_char(string* s, char value) {
     int result = UNDEFINED;
     if (s->last_element < s->memory_size) {
         result = SUCCESS;
@@ -77,7 +79,7 @@ int add_char(struct string* s, char value) {
 }
 
 // Copies s2 to s1 (taking minimal memory size) -> s1='aboba', s2='bobr' -> s1='bobr'
-int copy_string(struct string* s1, struct string s2) {
+int copy_string(string* s1, string s2) {
     int result = UNDEFINED;
     uint64_t minimal = min(s1->last_element, s2.last_element);
     for (uint64_t i = 0; i < s1->last_element; ++i) {
@@ -92,7 +94,7 @@ int copy_string(struct string* s1, struct string s2) {
 }
 
 // Pushes whole s2 to s1
-int push_string(struct string* s1, struct string s2) {
+int push_string(string* s1, string s2) {
     int result = UNDEFINED;
     for (uint64_t i = 0; i < s2.last_element; ++i) {
         add_char(s1, s2.values[i]);
@@ -100,15 +102,15 @@ int push_string(struct string* s1, struct string s2) {
 }
 
 // Fully changes parameters of s1 to s2
-int set_string(struct string* s1, struct string s2) {
+int set_string(string* s1, string s2) {
     int result = UNDEFINED;
     *s1 = s2;
     return SUCCESS;
 }
 
 int main() {
-    struct string s;
-    struct string a;
+    string s;
+    string a;
 
     init_string(&s);
     init_string(&a);
