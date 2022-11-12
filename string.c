@@ -98,9 +98,12 @@ int push_string(struct string* s1, struct string s2) {
     }
 }
 
-// int set(struct string* s1, struct string s2) {
-//
-// }
+// Fully changes parameters of s1 to s2
+int set_string(struct string* s1, struct string s2) {
+    int result = UNDEFINED;
+    *s1 = s2;
+    return SUCCESS;
+}
 
 int main() {
     struct string s;
