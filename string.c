@@ -1,4 +1,4 @@
-#ifdef STRING_H
+#ifndef STRING_H
 
 #define STRING_H
 
