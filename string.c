@@ -91,6 +91,13 @@ int copy_string(struct string* s1, struct string s2) {
     return result;
 }
 
+int push_string(struct string* s1, struct string s2) {
+    int result = UNDEFINED;
+    for (uint64_t i = 0; i < s2.last_element; ++i) {
+        add_char(s1, s2.values[i]);
+    }
+}
+
 // int set(struct string* s1, struct string s2) {
 //
 // }
@@ -112,7 +119,7 @@ int main() {
 
     printf("%s\n", a.values);
 
-    copy_string(&s, a);
+    push_string(&s, a);
 
     printf("%s\n", s.values);
 
