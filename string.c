@@ -17,8 +17,8 @@ const uint64_t INIT_CAPACITY = 2;
 const uint64_t EXTENDED_CAPACITY = 2;
 
 // Memory-related macros 
-#define new(a, n) (a*)calloc(sizeof(a), sizeof(a) * n)
-#define reallocate(ptr, a, n) (a*)realloc(ptr, sizeof(a))
+#define new(a, n) (a*)calloc(n, sizeof(a) * n)
+#define reallocate(ptr, a, n) (a*)realloc(ptr, sizeof(a) * n)
 
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
