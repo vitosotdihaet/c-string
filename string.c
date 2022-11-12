@@ -80,7 +80,7 @@ int add_char(struct string* s, char value) {
 int copy_string(struct string* s1, struct string s2) {
     int result = UNDEFINED;
     uint64_t minimal = min(s1->last_element, s2.last_element);
-    for (int i = 0; i < s1->last_element; ++i) {
+    for (uint64_t i = 0; i < s1->last_element; ++i) {
         if (i < minimal) {
             s1->values[i] = s2.values[i];
         } else {
