@@ -78,7 +78,7 @@ int add_char(string* s, char value) {
     return result;
 }
 
-// Copies s2 to s1 (taking minimal memory size) -> s1='aboba', s2='bobr' -> s1='bobr'
+// Copies s2 to s1 (taking minimal memory size) -> s1='aboba', s2='bobr' -> s1='bobr '
 int copy_string(string* s1, string s2) {
     int result = UNDEFINED;
     uint64_t minimal = min(s1->last_element, s2.last_element);
