@@ -7,18 +7,19 @@
 #include <inttypes.h>
 
 
-typedef struct string {
+struct string
+{
     char *values;
     uint64_t last_element;
     uint64_t memory_size;
-} string;
+};
 
 
 // Initialize string with default capacity
 int init_string(string* s);
 
 // Initialize struct string with set capacity
-int init_string_with_set_capacity(string* s, uint64_t capacity);
+int init_string_with_set_capacity(string* s, uint64_t capacity); // init_string
 
 // Sets all struct's parameters to zero
 int free_string(string* s);
@@ -27,10 +28,10 @@ int free_string(string* s);
 int string_resize(string* s, uint64_t capacity);
 
 // Adds a char to string, adding more memory if needed 
-int add_char(string* s, char value);
+int add_char(string* s, char value); 
 
 // Copies s2 to s1 (taking minimal memory size) -> s1='aboba', s2='bobr' -> s1='bobr '
-int copy_string(string* s1, string s2);
+int copy_string(string* s1, string s2); // strcpy
 
 // Pushes whole s2 to s1
 int push_string(string* s1, string s2);
