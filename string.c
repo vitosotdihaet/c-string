@@ -26,14 +26,6 @@ int init_string(string* s) {
     return result;
 }
 
-// Initialize string with set capacity
-int init_string_with_set_capacity(string* s, uint64_t capacity) {
-    s->memory_size = capacity;
-    s->values = new(char, capacity);
-    s->last_element = 0;
-    return SUCCESS;
-}
-
 // Sets all struct's parameters to zero
 int free_string(string* s) {
     s->values = new(char, 0);

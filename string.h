@@ -17,9 +17,6 @@ typedef struct string {
 // Initialize string with default capacity
 int init_string(string* s);
 
-// Initialize struct string with set capacity
-int init_string_with_set_capacity(string* s, uint64_t capacity);
-
 // Sets all struct's parameters to zero
 int free_string(string* s);
 
