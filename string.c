@@ -1,12 +1,6 @@
-#define STRING_H
+#include "string.h"
 
-#ifdef STRING_H
-
-#include <stdio.h>
-#include <stdlib.h>
-#include <inttypes.h>
-
-//? Maybe deprecated, but those are for error handling 
+//? Maybe deprecated, but those are for error handling
 #define UNDEFINED 0
 #define SUCCESS 1
 #define ERROR -1
@@ -17,20 +11,14 @@ const uint64_t INIT_CAPACITY = 2;
 const uint64_t EXTENDED_CAPACITY = 2;
 
 // Memory-related macros 
-#define new(a, n) (a*)calloc(sizeof(a), sizeof(a) * n)
-#define reallocate(ptr, a, n) (a*)realloc(ptr, sizeof(a))
+#define new(a, n) (a*)calloc(n, sizeof(a) * n)
+#define reallocate(ptr, a, n) (a*)realloc(ptr, sizeof(a) * n)
 
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
 
-struct string {
-    char *values;
-    uint64_t last_element;
-    uint64_t memory_size;
-};
-
 // Initialize string with default capacity
-int init_string(struct string* s) {
+int init_string(string* s) {
     int result = UNDEFINED;
     s->memory_size = INIT_CAPACITY;
     s->values = new(char, INIT_CAPACITY);
@@ -39,17 +27,15 @@ int init_string(struct string* s) {
 }
 
 // Initialize string with set capacity
-int init_string_with_set_capacity(struct string* s, uint64_t capacity) {
-    int result = UNDEFINED;
+int init_string_with_set_capacity(string* s, uint64_t capacity) {
     s->memory_size = capacity;
     s->values = new(char, capacity);
     s->last_element = 0;
-    return result;
+    return SUCCESS;
 }
 
 // Sets all struct's parameters to zero
-int free_string(struct string* s) {
-    int result = UNDEFINED;
+int free_string(string* s) {
     s->values = new(char, 0);
     s->last_element = 0;
     s->memory_size = 0;
@@ -57,14 +43,13 @@ int free_string(struct string* s) {
 }
 
 // Adds memory
-int string_resize(struct string* s, uint64_t capacity) {
-    int result = UNDEFINED;
+int string_resize(string* s, uint64_t capacity) {
     s->values = reallocate(s->values, char, capacity);
     return SUCCESS;
 }
 
 // Adds a char to string, adding more memory if needed 
-int add_char(struct string* s, char value) {
+int add_char(string* s, char value) {
     int result = UNDEFINED;
     if (s->last_element < s->memory_size) {
         result = SUCCESS;
@@ -76,11 +61,11 @@ int add_char(struct string* s, char value) {
     return result;
 }
 
-// Copies s2 to s1 (taking minimal memory size) -> s1='aboba', s2='bobr' -> s1='bobr'
-int copy_string(struct string* s1, struct string s2) {
+// Copies s2 to s1 (taking minimal memory size) -> s1='aboba', s2='bobr' -> s1='bobr '
+int copy_string(string* s1, string s2) {
     int result = UNDEFINED;
     uint64_t minimal = min(s1->last_element, s2.last_element);
-    for (int i = 0; i < s1->last_element; ++i) {
+    for (uint64_t i = 0; i < s1->last_element; ++i) {
         if (i < minimal) {
             s1->values[i] = s2.values[i];
         } else {
@@ -91,32 +76,18 @@ int copy_string(struct string* s1, struct string s2) {
     return result;
 }
 
-// int set(struct string* s1, struct string s2) {
-//
-// }
-
-int main() {
-    struct string s;
-    struct string a;
-
-    init_string(&s);
-    init_string(&a);
-
-    add_char(&s, 'h');
-
-    printf("%s\n", s.values);
-
-    add_char(&a, 'b');
-    add_char(&a, 'e');
-    add_char(&a, 'b');
-
-    printf("%s\n", a.values);
-
-    copy_string(&s, a);
-
-    printf("%s\n", s.values);
-
-    return 0;
+// Pushes whole s2 to s1
+int push_string(string* s1, string s2) {
+    int result = UNDEFINED;
+    for (uint64_t i = 0; i < s2.last_element; ++i) {
+        result = add_char(s1, s2.values[i]);
+        if (result != SUCCESS) { return result; }
+    }
+    return SUCCESS;
 }
 
-#endif
+// Fully changes parameters of s1 to s2
+int set_string(string* s1, string s2) {
+    *s1 = s2;
+    return SUCCESS;
+}
