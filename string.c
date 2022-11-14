@@ -1,3 +1,7 @@
+#include <stdio.h>
+#include <stdlib.h>
+#include <string.h>
+
 #include "string.h"
 
 //? Maybe deprecated, but those are for error handling

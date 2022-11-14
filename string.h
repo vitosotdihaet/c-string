@@ -1,11 +1,7 @@
 #ifndef STRING_H
-
 #define STRING_H
 
-#include <stdio.h>
-#include <stdlib.h>
 #include <inttypes.h>
-
 
 typedef struct string {
     char *values;
