@@ -68,11 +68,35 @@ int copy_string(string* s1, string s2) {
     return result;
 }
 
-// Pushes whole s2 to s1
+// Pushes a char to string 
+int push_char(string* s, char value) {
+    int result = UNDEFINED;
+    if (s->last_element < s->memory_size) {
+        result = SUCCESS;
+    } else {
+        result = string_resize(s, 2);
+    }
+    s->values[s->last_element] = value;
+    s->last_element++;
+    return result;
+}
+
+// Pushes whole string2 to string1
 int push_string(string* s1, string s2) {
     int result = UNDEFINED;
     for (uint64_t i = 0; i < s2.last_element; ++i) {
-        result = add_char(s1, s2.values[i]);
+        result = push_char(s1, s2.values[i]);
+        if (result != SUCCESS) { return result; }
+    }
+    return SUCCESS;
+}
+
+// Pushes native C string to string
+int push_chars(string* s, char values[]) {
+    int result = UNDEFINED;
+    uint64_t l = strlen(values);
+    for (uint64_t i = 0; i < l; ++i) {
+        result = push_char(s, values[i]);
         if (result != SUCCESS) { return result; }
     }
     return SUCCESS;

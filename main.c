@@ -7,12 +7,13 @@ int main() {
     string s2;
     init_string(&s2);
 
-    add_char(&s2, 'h');
-    add_char(&s2, 'i');
+    push_char(&s2, 'h');
+    push_char(&s2, 'i');
+    push_char(&s2, 'a');
 
     printf("s2 after adding h and i: %s\n", s2.values);
 
-    add_char(&s1, 'a');
+    push_char(&s1, 'a');
     printf("s1 after adding a: %s\n", s1.values);
 
     push_string(&s1, s2);
