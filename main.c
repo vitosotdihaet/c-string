@@ -11,7 +11,7 @@ int main() {
     push_char(&s2, 'i');
     push_char(&s2, 'a');
 
-    printf("s2 after adding h and i: %s\n", s2.values);
+    printf("s2 after adding h, i and a: %s\n", s2.values);
 
     push_char(&s1, 'a');
     printf("s1 after adding a: %s\n", s1.values);
