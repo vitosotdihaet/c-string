@@ -99,7 +99,7 @@ int set_string(string* s1, string s2) {
     return SUCCESS;
 }
 
-// Reads string char by char returning 1 if EOF
+// Reads string char by char returning -1 if EOF
 int read_string(string* s) {
     char c = ' ';
     int end = 0;
@@ -109,7 +109,7 @@ int read_string(string* s) {
         if (c == ' ' || c == ',' || c == '\t' || c == '\n') {
             break;
         } else if ((int) c == EOF) {
-            end = 1;
+            end = -1;
             break;
         }
         push_char(s, c);
