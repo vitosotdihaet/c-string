@@ -1,8 +1,6 @@
 CC = gcc
 
-CFLAGS  = -g -Wall
-
-# the build target executable:
+CFLAGS  = -g -Wall -Wextra
 
 a:
 	$(CC) $(CFLAGS) -o main.out main.c string.c
