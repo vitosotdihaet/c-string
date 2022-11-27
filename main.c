@@ -35,5 +35,11 @@ int main() {
     push_string(&s2, s1);
     printf("s2 after pushing s1 to it: %s\n", s2.values);
 
+    if (string_contains(s2, 'a')) {
+        printf("s2 contains 'a'! It's index is %lld!\n", index_string(s2, 'a'));
+    } else {
+        printf("s2 doesn't contain 'a' :(\n");
+    }
+
     return 0;
 }
