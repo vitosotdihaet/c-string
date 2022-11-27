@@ -34,4 +34,10 @@ int set_string(string* s1, string s2);
 // Reads string char by char returning 1 if EOF
 int read_string(string* s);
 
+// Returns index of char if present, else -1
+uint64_t index_string(string s1, char c);
+
+// Returns 1 if char is present else 0
+int string_contains(string s1, char c);
+
 #endif

@@ -111,3 +111,23 @@ int read_string(string* s) {
 
     return end;
 }
+
+// Returns index of char if present, else -1
+uint64_t index_string(string s1, char c) {
+    for (__int128_t i = 0; i < s1.last_element; ++i) {
+        if (s1.values[i] == c) {
+            return i;
+        }
+    }
+    return -1;
+}
+
+// Returns 1 if char is present else 0
+int string_contains(string s1, char c) {
+    for (uint64_t i = 0; i < s1.last_element; ++i) {
+        if (s1.values[i] == c) {
+            return 1;
+        }
+    }
+    return 0;
+}
