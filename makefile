@@ -4,4 +4,3 @@ CFLAGS  = -Wshadow -Winit-self -Wredundant-decls -Wcast-align -Wundef -Wfloat-eq
 
 a:
 	$(CC) $(CFLAGS) -o main.out main.c string.c
-	./main.out
