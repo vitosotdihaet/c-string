@@ -14,58 +14,65 @@ const uint64_t INIT_CAPACITY = 2;
 // How big relative to previous allocated memory new memory should be
 const uint64_t EXTENDED_CAPACITY = 2;
 
-// Memory-related macros 
-#define new(a, n) (a*)calloc(n, sizeof(a) * n)
-#define reallocate(ptr, a, n) (a*)realloc(ptr, sizeof(a) * n)
-
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
 
 // Initialize string with default capacity
 int init_string(string* s) {
     int result = UNDEFINED;
+
     s->memory_size = INIT_CAPACITY;
-    s->values = new(char, INIT_CAPACITY);
+    s->values = (char*) calloc(INIT_CAPACITY, sizeof(char));
     s->last_element = 0;
     s->values[0] = '\0';
+
     return result;
 }
 
 // Reallocates memory
 int string_resize(string* s, uint64_t capacity) {
-    s->values = reallocate(s->values, char, capacity);
+    s->memory_size *= capacity;
+    s->values = (char*) realloc(s->values, sizeof(char) * s->memory_size);
+
     return SUCCESS;
 }
 
 // Pushes a char to string 
 int push_char(string* s, char value) {
     int result = UNDEFINED;
+
     if (s->last_element < s->memory_size - 1) {
         result = SUCCESS;
     } else {
-        result = string_resize(s, 2);
+        result = string_resize(s, EXTENDED_CAPACITY);
     }
+
     s->values[s->last_element] = value;
     s->values[s->last_element + 1] = '\0';
     s->last_element++;
+
     return result;
 }
 
-// Pushes native C string to string
+// Pushes native C string to the custom string
 int push_chars(string* s, char values[]) {
     int result = UNDEFINED;
+
     uint64_t l = strlen(values);
     for (uint64_t i = 0; i < l; ++i) {
         result = push_char(s, values[i]);
         if (result != SUCCESS) return result;
     }
+
     return result;
 }
 
 // Pushes whole string2 to string1
 int push_string(string* s1, string s2) {
     int result = UNDEFINED;
+
     result = push_chars(s1, s2.values);
+
     return result;
 }
 
@@ -87,35 +94,40 @@ int copy_string(string* s1, string s2) {
 // Fully changes parameters of s1 to s2
 int set_string(string* s1, string s2) {
     int result = UNDEFINED;
+
     result = init_string(s1);
     result = push_string(s1, s2);
+
     return result;
 }
 
-// Reads string char by char returning 1 or -1 if EOF
+// Reads string char by char returning -1 if EOF
 int read_string(string* s) {
     init_string(s);
-    char c = ' ';
-    int end = 1;
+    int c = 0;
+    int end = 0;
 
     while (1) {
         c = getchar();
-        if (c == ' ' || c == ',' || c == '\t' || c == '\n') {
-            break;
-        } else if ((int) c == EOF) {
+        char ch = (char) c;
+
+        if (c == EOF) {
             end = EOF;
             break;
+        } else if (ch == ' ' || ch == ',' || ch == '\t' || ch == '\n') {
+            break;
         }
-        push_char(s, c);
+
+        push_char(s, ch);
     }
 
     return end;
 }
 
 // Returns index of char if present, else -1
-uint64_t index_string(string s1, char c) {
-    for (__int128_t i = 0; i < s1.last_element; ++i) {
-        if (s1.values[i] == c) {
+uint64_t index_string(string s, char c) {
+    for (__int128_t i = 0; i < s.last_element; ++i) {
+        if (s.values[i] == c) {
             return i;
         }
     }
@@ -123,11 +135,16 @@ uint64_t index_string(string s1, char c) {
 }
 
 // Returns 1 if char is present else 0
-int string_contains(string s1, char c) {
-    for (uint64_t i = 0; i < s1.last_element; ++i) {
-        if (s1.values[i] == c) {
+int string_contains(string s, char c) {
+    for (uint64_t i = 0; i < s.last_element; ++i) {
+        if (s.values[i] == c) {
             return 1;
         }
     }
     return 0;
+}
+
+// Returns length of a string
+uint64_t string_len(string s) {
+    return s.last_element;
 }
