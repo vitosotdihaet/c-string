@@ -101,14 +101,14 @@ int string_set(string* s1, string s2) {
     return result;
 }
 
-// Reads string char by char returning -1 if EOF
-int string_read(string* s) {
+// Reads string char by char returning EOF if EOF
+int string_read(string* s, FILE* stream) {
     string_init(s);
     int c = 0;
     int end = 0;
 
     while (1) {
-        c = getchar();
+        c = fgetc(stream);
         char ch = (char) c;
 
         if (c == EOF) {
@@ -149,4 +149,13 @@ int string_contains(string s, char c) {
 // Returns length of a string
 uint32_t string_len(string s) {
     return s.last_element;
+}
+
+// Returns element at ith position if it exists, else EOF
+int string_at(string s, uint32_t i) {
+    if (i <= s.last_element) {
+        return s.values[i];
+    } else {
+        return EOF;
+    }
 }
