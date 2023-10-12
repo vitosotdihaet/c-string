@@ -7,3 +7,6 @@ a: string.o
 
 string:
 	$(CC) $(CFLAGS) -c string.c
+
+clear:
+	rm -f string.o main.out
