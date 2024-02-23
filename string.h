@@ -10,6 +10,7 @@
 #define _STRING_H
 
 #include <inttypes.h>
+#include <stdio.h>
 
 typedef struct string {
     char *values;
@@ -57,7 +58,6 @@ int string_at(string s, uint32_t i);
 #ifdef _STRING_IMPLEMENTATION
 #include <stdlib.h>
 #include <string.h>
-#include <stdio.h>
 
 //? Maybe deprecated, but those are for error handling
 #define UNDEFINED 0
