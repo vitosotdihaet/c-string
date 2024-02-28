@@ -47,5 +47,8 @@ int main() {
 
     printf("Char in s2 at index = 0 is %c\n", string_at(s2, 0));
 
+    string_free(s1);
+    string_free(s2);
+
     return 0;
 }

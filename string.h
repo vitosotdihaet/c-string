@@ -11,6 +11,8 @@
 
 #include <inttypes.h>
 #include <stdio.h>
+#include <string.h>
+#include <stdlib.h>
 
 typedef struct string {
     char *values;
@@ -55,48 +57,51 @@ uint32_t string_len(string s);
 // Returns element at ith position if it exists, else EOF
 int string_at(string s, uint32_t i);
 
-#ifdef _STRING_IMPLEMENTATION
-#include <stdlib.h>
-#include <string.h>
+// Free the buffer, set all fields to 0
+void string_free(string s);
 
+
+#ifdef _STRING_IMPLEMENTATION
 //? Maybe deprecated, but those are for error handling
-#define UNDEFINED 0
-#define SUCCESS 1
-#define ERROR -1
+#define STRING_UNDEFINED 0
+#define STRING_SUCCESS 1
+#define STRING_ERROR -1
 
 // How big initial memory is
-const uint32_t INIT_CAPACITY = 2;
+const uint32_t STRING_INIT_CAPACITY = 2;
 // How big relative to previous allocated memory new memory should be
-const uint32_t EXTENDED_CAPACITY = 2;
+const uint32_t STRING_EXTENDED_CAPACITY_FACTOR = 2;
 
 #define max(a, b) (a > b ? a : b)
 #define min(a, b) (a < b ? a : b)
 
 int string_init(string* s) {
-    int result = UNDEFINED;
+    int result = STRING_UNDEFINED;
 
-    s->memory_size = INIT_CAPACITY;
-    s->values = (char*) calloc(INIT_CAPACITY, sizeof(char));
+    s->memory_size = STRING_INIT_CAPACITY;
+    s->values = (char*) calloc(STRING_INIT_CAPACITY, sizeof(char));
     s->last_element = 0;
-    s->values[0] = '\0';
 
     return result;
 }
 
 int string_resize(string* s, uint32_t capacity) {
     s->memory_size *= capacity;
-    s->values = (char*) realloc(s->values, sizeof(char) * s->memory_size);
+    char *new_ptr = (char*) realloc(s->values, sizeof(char) * s->memory_size);
 
-    return SUCCESS;
+    if (new_ptr == NULL) return STRING_ERROR;
+    s->values = new_ptr;
+
+    return STRING_SUCCESS;
 }
 
 int string_push_char(string* s, char value) {
-    int result = UNDEFINED;
+    int result = STRING_UNDEFINED;
 
     if (s->last_element < s->memory_size - 1) {
-        result = SUCCESS;
+        result = STRING_SUCCESS;
     } else {
-        result = string_resize(s, EXTENDED_CAPACITY);
+        result = string_resize(s, STRING_EXTENDED_CAPACITY_FACTOR);
     }
 
     s->values[s->last_element] = value;
@@ -107,19 +112,19 @@ int string_push_char(string* s, char value) {
 }
 
 int string_push_str(string* s, char values[]) {
-    int result = UNDEFINED;
+    int result = STRING_UNDEFINED;
 
     uint32_t l = strlen(values);
     for (uint32_t i = 0; i < l; ++i) {
         result = string_push_char(s, values[i]);
-        if (result != SUCCESS) return result;
+        if (result != STRING_SUCCESS) return result;
     }
 
     return result;
 }
 
 int string_push_string(string* s1, string s2) {
-    int result = UNDEFINED;
+    int result = STRING_UNDEFINED;
 
     result = string_push_str(s1, s2.values);
 
@@ -127,7 +132,8 @@ int string_push_string(string* s1, string s2) {
 }
 
 int string_copy(string* s1, string s2) {
-    int result = UNDEFINED;
+    int result = STRING_UNDEFINED;
+
     uint32_t minimal = min(s1->last_element, s2.last_element);
     for (uint32_t i = 0; i < s1->last_element; ++i) {
         if (i < minimal) {
@@ -137,12 +143,14 @@ int string_copy(string* s1, string s2) {
         }
     }
     s1->last_element = minimal;
+
     return result;
 }
 
 int string_set(string* s1, string s2) {
-    int result = UNDEFINED;
+    int result = STRING_UNDEFINED;
 
+    string_free(*s1);
     result = string_init(s1);
     result = string_push_string(s1, s2);
 
@@ -150,7 +158,9 @@ int string_set(string* s1, string s2) {
 }
 
 int string_read(string* s, FILE* stream) {
+    string_free(*s);
     string_init(s);
+
     int c = 0;
     int end = 0;
 
@@ -201,6 +211,13 @@ int string_at(string s, uint32_t i) {
     } else {
         return EOF;
     }
+}
+
+void string_free(string s) {
+    if (s.values != NULL) free(s.values);
+    s.values = NULL;
+    s.last_element = 0;
+    s.memory_size = 0;
 }
 
 #endif // _STRING_IMPLEMENTATION
