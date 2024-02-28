@@ -44,7 +44,7 @@ int string_set(string* s1, string s2);
 int string_read(string* s, FILE* stream);
 
 // Returns index of char if present, else -1
-int64_t string_index(string s1, char c);
+int64_t string_find(string s1, char c);
 
 // Returns 1 if char is present else 0
 int string_contains(string s1, char c);
@@ -161,7 +161,7 @@ int string_read(string* s, FILE* stream) {
         if (c == EOF) {
             end = EOF;
             break;
-        } else if (ch == ' ' || ch == ',' || ch == '\t' || ch == '\n') {
+        } else if (ch == ' ' || ch == '\t' || ch == '\n') {
             break;
         }
 
@@ -171,7 +171,7 @@ int string_read(string* s, FILE* stream) {
     return end;
 }
 
-int64_t string_index(string s, char c) {
+int64_t string_find(string s, char c) {
     for (int64_t i = 0; i < s.last_element; ++i) {
         if (s.values[i] == c) {
             return i;
